@@ -65,7 +65,7 @@ const Dashboard = () => {
           {/* Welcome Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2 bg-gift-gradient bg-clip-text text-transparent">
-              Welcome back, Chandra! 🎁
+              Welcome back, Chandra Raju! 🎁
             </h1>
             <p className="text-xl text-gray-600">
               You have {reminders.length} upcoming events to plan for
