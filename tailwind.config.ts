@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				gift: {
+					primary: 'hsl(var(--gift-primary))',
+					secondary: 'hsl(var(--gift-secondary))',
+					accent: 'hsl(var(--gift-accent))',
+					warm: 'hsl(var(--gift-warm))',
+					cool: 'hsl(var(--gift-cool))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +92,47 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
+				},
+				'pulse-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px rgba(168, 85, 247, 0.4)'
+					},
+					'50%': {
+						boxShadow: '0 0 40px rgba(168, 85, 247, 0.8)'
+					}
+				},
+				'gradient-shift': {
+					'0%, 100%': {
+						backgroundPosition: '0% 50%'
+					},
+					'50%': {
+						backgroundPosition: '100% 50%'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+				'gradient-shift': 'gradient-shift 6s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'gift-gradient': 'linear-gradient(135deg, hsl(var(--gift-primary)), hsl(var(--gift-secondary)))',
+				'warm-gradient': 'linear-gradient(135deg, hsl(var(--gift-warm)), hsl(var(--gift-accent)))',
+				'cool-gradient': 'linear-gradient(135deg, hsl(var(--gift-cool)), hsl(var(--gift-primary)))',
+				'hero-gradient': 'linear-gradient(135deg, hsl(var(--gift-primary)) 0%, hsl(var(--gift-secondary)) 50%, hsl(var(--gift-accent)) 100%)'
+			},
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
 			}
 		}
 	},

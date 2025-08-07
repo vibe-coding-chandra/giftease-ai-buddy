@@ -1,14 +1,15 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Giftease Design System - All colors, gradients, fonts, etc defined here */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 250 250 250;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -36,22 +37,22 @@ All colors MUST be HSL.
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Giftease Brand Colors */
+    --gift-primary: 280 100% 70%;
+    --gift-secondary: 320 70% 60%;
+    --gift-accent: 45 100% 70%;
+    --gift-warm: 15 80% 65%;
+    --gift-cool: 210 80% 65%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -83,6 +84,13 @@ All colors MUST be HSL.
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --gift-primary: 280 100% 80%;
+    --gift-secondary: 320 70% 70%;
+    --gift-accent: 45 100% 75%;
+    --gift-warm: 15 80% 70%;
+    --gift-cool: 210 80% 70%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +108,63 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+
+  .hero-text {
+    @apply text-6xl md:text-7xl lg:text-8xl font-bold bg-hero-gradient bg-clip-text text-transparent;
+  }
+
+  .subtitle-text {
+    @apply text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed;
+  }
+
+  .floating-element {
+    @apply animate-float;
+  }
+
+  .gradient-border {
+    @apply relative bg-gift-gradient p-[1px] rounded-xl;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-xl bg-gift-gradient p-[1px];
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+}
+
+@layer components {
+  .btn-hero {
+    @apply bg-gift-gradient text-white border-0 hover:shadow-2xl hover:scale-105 transition-all duration-300 text-lg px-8 py-6 rounded-xl font-semibold;
+  }
+
+  .btn-secondary {
+    @apply bg-white/90 text-gift-primary border border-gift-primary/20 hover:bg-gift-primary hover:text-white hover:shadow-lg transition-all duration-300 px-6 py-3 rounded-lg font-medium;
+  }
+
+  .btn-accent {
+    @apply bg-warm-gradient text-white border-0 hover:shadow-xl hover:scale-105 transition-all duration-300 px-6 py-3 rounded-lg font-medium;
+  }
+
+  .card-elegant {
+    @apply bg-white/95 backdrop-blur-sm border border-white/30 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl p-6;
+  }
+
+  .card-minimal {
+    @apply bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl p-4;
+  }
+
+  .input-modern {
+    @apply bg-white/90 border border-gray-200 focus:border-gift-primary focus:ring-2 focus:ring-gift-primary/20 rounded-lg px-4 py-3 transition-all duration-200;
+  }
+
+  .page-gradient {
+    @apply min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50;
   }
 }
