@@ -110,11 +110,13 @@ const ConversationalGiftSuggestions = ({
 
   const generateSuggestions = () => {
     setIsLoading(true);
+    handleNext(); // Move to loading step
+    
     // Simulate AI generation
     setTimeout(() => {
       setSuggestions(sampleSuggestions);
       setIsLoading(false);
-      handleNext();
+      handleNext(); // Move to suggestions display step
     }, 2000);
   };
 
@@ -160,16 +162,16 @@ const ConversationalGiftSuggestions = ({
           {selectedRecipient && renderMessage(`This gift is for ${selectedRecipient.name}`, false)}
           
           {/* Step 2: Event */}
-          {currentStep >= 1 && renderMessage(`What's the occasion or event for ${selectedRecipient?.name}?`)}
-          {(eventType || eventDescription) && renderMessage(eventType || eventDescription, false)}
+          {currentStep >= 1 && selectedRecipient && renderMessage(`What's the occasion or event for ${selectedRecipient?.name}?`)}
+          {currentStep >= 1 && (eventType || eventDescription) && renderMessage(eventType || eventDescription, false)}
           
           {/* Step 3: Preferences */}
-          {currentStep >= 2 && renderMessage("Do you have something in mind or want us to surprise you?")}
+          {currentStep >= 2 && (eventType || eventDescription) && renderMessage("Do you have something in mind or want us to surprise you?")}
           {currentStep >= 2 && preferences.surpriseMe !== null && renderMessage(preferences.surpriseMe ? "Surprise me!" : "I have a few preferences...", false)}
           
           {/* Step 4: Loading */}
-          {currentStep >= 3 && !isLoading && renderMessage("Got it! I'm thinking...")}
-          {isLoading && (
+          {currentStep >= 3 && preferences.surpriseMe !== null && renderMessage("Got it! I'm thinking...")}
+          {currentStep === 3 && isLoading && (
             <div className="flex justify-center items-center py-8">
               <RefreshCw className="w-8 h-8 animate-spin text-gift-primary" />
               <span className="ml-2 text-gift-primary">Generating perfect gift ideas...</span>
@@ -252,7 +254,7 @@ const ConversationalGiftSuggestions = ({
         </div>
 
         {/* Input Area */}
-        {currentStep < 4 && !isLoading && (
+        {currentStep < 3 && !isLoading && (
           <Card className="border-t rounded-t-none">
             <CardContent className="p-4">
               {/* Recipient Selection */}
@@ -375,50 +377,54 @@ const ConversationalGiftSuggestions = ({
                   </div>
                 </div>
               )}
+            </CardContent>
+          </Card>
+        )}
 
-              {/* Detailed Preferences */}
-              {currentStep === 3 && preferences.surpriseMe === false && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Budget Range</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {budgetRanges.map((range) => (
-                        <Button
-                          key={range}
-                          variant={preferences.budgetRange === range ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setPreferences({...preferences, budgetRange: range})}
-                          className={preferences.budgetRange === range ? "bg-gift-primary" : ""}
-                        >
-                          {range}
-                        </Button>
-                      ))}
-                    </div>
+        {/* Detailed Preferences - shown after user selects "I have preferences..." */}
+        {currentStep === 3 && preferences.surpriseMe === false && !isLoading && (
+          <Card className="border-t rounded-t-none">
+            <CardContent className="p-4">
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Budget Range</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {budgetRanges.map((range) => (
+                      <Button
+                        key={range}
+                        variant={preferences.budgetRange === range ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setPreferences({...preferences, budgetRange: range})}
+                        className={preferences.budgetRange === range ? "bg-gift-primary" : ""}
+                      >
+                        {range}
+                      </Button>
+                    ))}
                   </div>
-                  
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Gift Type</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {giftTypes.map((type) => (
-                        <Button
-                          key={type}
-                          variant={preferences.giftType === type ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setPreferences({...preferences, giftType: type})}
-                          className={preferences.giftType === type ? "bg-gift-primary" : ""}
-                        >
-                          {type}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <Button onClick={generateSuggestions} className="w-full btn-hero">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Find Perfect Gifts
-                  </Button>
                 </div>
-              )}
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Gift Type</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {giftTypes.map((type) => (
+                      <Button
+                        key={type}
+                        variant={preferences.giftType === type ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setPreferences({...preferences, giftType: type})}
+                        className={preferences.giftType === type ? "bg-gift-primary" : ""}
+                      >
+                        {type}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                <Button onClick={generateSuggestions} className="w-full btn-hero">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Find Perfect Gifts
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}
