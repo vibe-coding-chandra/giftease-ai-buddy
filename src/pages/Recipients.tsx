@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import ConversationalAddRecipient from "@/components/ConversationalAddRecipient";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Users, Calendar, Edit, Gift, Heart } from "lucide-react";
 
 const Recipients = () => {
+  const navigate = useNavigate();
   const [recipients, setRecipients] = useState([
     {
       id: 1,
@@ -56,6 +58,10 @@ const Recipients = () => {
   const handleAddRecipient = (recipient) => {
     setRecipients([...recipients, recipient]);
     setIsAddingRecipient(false);
+  };
+
+  const handleFindGift = (recipientId: number) => {
+    navigate(`/gift-suggestions?recipientId=${recipientId}`);
   };
 
   const getInitials = (name) => {
@@ -217,7 +223,11 @@ const Recipients = () => {
 
                     {/* Actions */}
                     <div className="flex gap-2">
-                      <Button size="sm" className="btn-accent flex-1">
+                      <Button 
+                        size="sm" 
+                        className="btn-accent flex-1"
+                        onClick={() => handleFindGift(recipient.id)}
+                      >
                         <Gift className="w-4 h-4 mr-1" />
                         Find Gift
                       </Button>
