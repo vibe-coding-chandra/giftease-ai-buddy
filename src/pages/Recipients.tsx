@@ -1,14 +1,10 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
+import ConversationalAddRecipient from "@/components/ConversationalAddRecipient";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import { Plus, Users, Calendar, Edit, Gift, Heart } from "lucide-react";
 
 const Recipients = () => {
@@ -55,40 +51,11 @@ const Recipients = () => {
     }
   ]);
 
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [newRecipient, setNewRecipient] = useState({
-    name: "",
-    age: "",
-    relationship: "",
-    interests: "",
-    nextEvent: "",
-    nextEventDate: "",
-    notes: ""
-  });
+  const [isAddingRecipient, setIsAddingRecipient] = useState(false);
 
-  const handleAddRecipient = () => {
-    const recipient = {
-      id: recipients.length + 1,
-      name: newRecipient.name,
-      age: parseInt(newRecipient.age),
-      relationship: newRecipient.relationship,
-      interests: newRecipient.interests.split(",").map(i => i.trim()),
-      nextEvent: newRecipient.nextEvent,
-      nextEventDate: newRecipient.nextEventDate,
-      notes: newRecipient.notes
-    };
-    
+  const handleAddRecipient = (recipient) => {
     setRecipients([...recipients, recipient]);
-    setNewRecipient({
-      name: "",
-      age: "",
-      relationship: "",
-      interests: "",
-      nextEvent: "",
-      nextEventDate: "",
-      notes: ""
-    });
-    setIsAddDialogOpen(false);
+    setIsAddingRecipient(false);
   };
 
   const getInitials = (name) => {
@@ -101,6 +68,22 @@ const Recipients = () => {
     const timeDiff = event.getTime() - today.getTime();
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
   };
+
+  if (isAddingRecipient) {
+    return (
+      <div className="page-gradient min-h-screen">
+        <Header />
+        <div className="pt-24 pb-12">
+          <div className="container mx-auto px-4">
+            <ConversationalAddRecipient 
+              onSave={handleAddRecipient}
+              onCancel={() => setIsAddingRecipient(false)}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-gradient min-h-screen">
@@ -119,106 +102,13 @@ const Recipients = () => {
               </p>
             </div>
 
-            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="btn-hero">
-                  <Plus className="w-5 h-5 mr-2" />
-                  Add Recipient
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Add New Recipient</DialogTitle>
-                  <DialogDescription>
-                    Add someone special to your gift list
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        value={newRecipient.name}
-                        onChange={(e) => setNewRecipient({...newRecipient, name: e.target.value})}
-                        className="input-modern"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="age">Age</Label>
-                      <Input
-                        id="age"
-                        type="number"
-                        value={newRecipient.age}
-                        onChange={(e) => setNewRecipient({...newRecipient, age: e.target.value})}
-                        className="input-modern"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="relationship">Relationship</Label>
-                    <Input
-                      id="relationship"
-                      placeholder="e.g., Friend, Sister, Colleague"
-                      value={newRecipient.relationship}
-                      onChange={(e) => setNewRecipient({...newRecipient, relationship: e.target.value})}
-                      className="input-modern"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="interests">Interests</Label>
-                    <Input
-                      id="interests"
-                      placeholder="Separate with commas: cooking, travel, books"
-                      value={newRecipient.interests}
-                      onChange={(e) => setNewRecipient({...newRecipient, interests: e.target.value})}
-                      className="input-modern"
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="nextEvent">Next Event</Label>
-                      <Input
-                        id="nextEvent"
-                        placeholder="e.g., Birthday, Anniversary"
-                        value={newRecipient.nextEvent}
-                        onChange={(e) => setNewRecipient({...newRecipient, nextEvent: e.target.value})}
-                        className="input-modern"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="nextEventDate">Event Date</Label>
-                      <Input
-                        id="nextEventDate"
-                        type="date"
-                        value={newRecipient.nextEventDate}
-                        onChange={(e) => setNewRecipient({...newRecipient, nextEventDate: e.target.value})}
-                        className="input-modern"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="notes">Notes</Label>
-                    <Textarea
-                      id="notes"
-                      placeholder="Any special notes about their preferences..."
-                      value={newRecipient.notes}
-                      onChange={(e) => setNewRecipient({...newRecipient, notes: e.target.value})}
-                      className="input-modern"
-                      rows={3}
-                    />
-                  </div>
-                  
-                  <Button onClick={handleAddRecipient} className="w-full btn-hero">
-                    Add Recipient
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button 
+              className="btn-hero"
+              onClick={() => setIsAddingRecipient(true)}
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Add Recipient
+            </Button>
           </div>
 
           {/* Stats */}
