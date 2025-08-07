@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { User, ArrowRight, Sparkles, RefreshCw, Heart, ExternalLink, Share, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface Recipient {
   id: string;
@@ -48,7 +47,7 @@ const ConversationalGiftSuggestions = ({
   const [preferences, setPreferences] = useState({
     budgetRange: "",
     giftType: "",
-    surpriseMe: true
+    surpriseMe: null as boolean | null
   });
   const [suggestions, setSuggestions] = useState<GiftSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -296,7 +295,7 @@ const ConversationalGiftSuggestions = ({
               )}
 
               {/* Event Selection */}
-              {currentStep === 1 && !eventType && !eventDescription && (
+              {currentStep === 1 && (
                 <div className="space-y-4">
                   {selectedRecipient?.nextEvent && (
                     <div className="p-3 bg-gift-primary/10 rounded-lg border">
@@ -378,7 +377,7 @@ const ConversationalGiftSuggestions = ({
               )}
 
               {/* Detailed Preferences */}
-              {currentStep === 2 && preferences.surpriseMe === false && (
+              {currentStep === 3 && preferences.surpriseMe === false && (
                 <div className="space-y-4">
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">Budget Range</label>
